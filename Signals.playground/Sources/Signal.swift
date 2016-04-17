@@ -153,11 +153,11 @@ public func * <T, U> (lhs: Signal <T>, rhs: Signal <U>) -> Signal <(T, U)> {
 
 
 public extension Signal {
-	public func zipWith(other: Signal<T>, f: (T, T) -> T) -> Signal<T> {
+	public func zipWith <U, V> (other: Signal<U>, f: (T, U) -> V) -> Signal<V> {
 		let left_and_right = self * other
-		let composite = Signal<T>()
-		left_and_right.subscribe { (left: T, right: T) in
-			let combined: T = f(left, right)
+		let composite = Signal<V>()
+		left_and_right.subscribe { (left: T, right: U) in
+			let combined: V = f(left, right)
 			composite.emit(combined)
 		}
 		return composite
@@ -204,5 +204,3 @@ public extension Signal {
 		return throttled
 	}
 }
-
-
